@@ -1,0 +1,28 @@
+version: '2'
+services:
+  # Caching with Redis
+  cache:
+    image: redis:latest
+    container_name: mapadeburacos-cache
+    command: --appendonly yes
+    volumes:
+      - mapadeburacos-redis-data:/data
+    ports:
+      - '6379:6379'
+  api:
+    container_name: mapadeburacos-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ideiasabertas/mapadeburacos:latest
+    restart: unless-stopped
+    ports:
+      - 18888:8888
+  redis:
+    image: "redis:alpine"
+
+
+# Volumes
+volumes:
+  mapadeburacos-redis-data:
+    driver: local
