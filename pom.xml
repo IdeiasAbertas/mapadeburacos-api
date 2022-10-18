@@ -95,12 +95,12 @@
 						</path>
 						<!-- other annotation processors -->
 					</annotationProcessorPaths>
-					<excludes>
+					<!--excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 						</exclude>
-					</excludes>
+					</excludes-->
 				</configuration>
 			</plugin>
 		</plugins>
