@@ -6,6 +6,7 @@ import ao.co.mapaDeBuraco.repositories.CommentRepository;
 import ao.co.mapaDeBuraco.repositories.HoleRepository;
 import ao.co.mapaDeBuraco.service.CommentService;
 import ao.co.mapaDeBuraco.service.HoleService;
+import ao.co.mapaDeBuraco.service.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment findById(Long id) {
         Optional<Comment> comment = commentRepository.findById(id);
-        return comment.orElse(null);
+        return comment.orElseThrow(() -> new ObjectNotFoundException("Comment not found: " + id));
     }
 }
