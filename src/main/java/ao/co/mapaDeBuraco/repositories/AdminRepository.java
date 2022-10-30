@@ -1,9 +1,9 @@
 package ao.co.mapaDeBuraco.repositories;
 
-import ao.co.mapaDeBuraco.model.Administrator;
+import ao.co.mapaDeBuraco.model.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AdministratorRepository extends JpaRepository<Administrator, Long> {
+public interface AdminRepository extends JpaRepository<Admin, Long> {
 }

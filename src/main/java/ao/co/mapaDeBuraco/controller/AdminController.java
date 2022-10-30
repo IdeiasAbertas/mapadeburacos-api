@@ -1,7 +1,7 @@
 package ao.co.mapaDeBuraco.controller;
 
-import ao.co.mapaDeBuraco.model.Administrator;
-import ao.co.mapaDeBuraco.service.AdministratorService;
+import ao.co.mapaDeBuraco.model.Admin;
+import ao.co.mapaDeBuraco.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/user")
-public class UserController {
+public class AdminController {
     @Autowired
-    AdministratorService administratorService;
+    AdminService adminService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Administrator> findById(@PathVariable Long id){
-        return ResponseEntity.ok().body(administratorService.findById(id));
+    public ResponseEntity<Admin> findById(@PathVariable Long id){
+        return ResponseEntity.ok().body(adminService.findById(id));
 
     }
 }
