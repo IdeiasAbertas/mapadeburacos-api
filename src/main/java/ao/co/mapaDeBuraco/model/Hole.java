@@ -3,8 +3,10 @@ package ao.co.mapaDeBuraco.model;
 import ao.co.mapaDeBuraco.enums.HoleStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,11 +22,18 @@ public class Hole implements Serializable {
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty(message = "Precisa adicionar uma foto")
     private String picture;
+    @NotEmpty(message = "Descrição deve ser preenchida")
+    @Length(min = 5, max = 100, message = "Descrição deve conter de 3 a 100 caracteres")
     private String description;
+    @NotEmpty(message = "Latitude deve ser preenchida")
     private String latitude;
+    @NotEmpty(message = "Longitude deve ser preenchida")
     private String longitude;
+    @NotEmpty(message = "Bairro deve ser preenchido")
     private String neighborhood;
+    @NotEmpty(message = "Cidade deve ser preenchida")
     private String city;
 
     private Integer holeStatus;

@@ -10,14 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping(value = "/api")
 @Api(value = "API MAPA DE BURACOS")
 @CrossOrigin(origins = "*")
+@RestController
+@RequestMapping(value = "/api")
 public class CommentController {
 
     @Autowired
@@ -49,7 +50,7 @@ public class CommentController {
     @PostMapping(value = "/comment")
     @ApiOperation(value = "save comment ")
     public ResponseEntity<Comment> create(@RequestParam(value = "hole",defaultValue = "0") Long holeId,
-                                          @RequestBody Comment comment){
+                                           @Valid @RequestBody Comment comment){
         comment = commentService.create(holeId, comment);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(comment.getId()).toUri();
         return ResponseEntity.created(uri).body(comment);
@@ -57,7 +58,7 @@ public class CommentController {
 
     @PutMapping(value = "/comment/{id}")
     @ApiOperation(value = "update comment ")
-    public ResponseEntity<CommentDTO> update(@PathVariable Long id, @RequestBody CommentDTO commentDTO){
+    public ResponseEntity<CommentDTO> update(@PathVariable Long id, @Valid @RequestBody CommentDTO commentDTO){
         Comment comment = commentService.update(id, commentDTO);
         return ResponseEntity.ok(new CommentDTO(comment));
     }
