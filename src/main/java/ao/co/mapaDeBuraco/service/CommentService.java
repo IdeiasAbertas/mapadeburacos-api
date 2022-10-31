@@ -13,7 +13,7 @@ public interface CommentService {
 
     List<Comment> findAll();
 
-    Comment create(Comment comment);
+    Comment create(Long holeId, Comment comment);
 
     Comment update(Long id, CommentDTO commentDTO);
 
