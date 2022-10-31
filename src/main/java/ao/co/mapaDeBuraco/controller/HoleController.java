@@ -10,14 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/api")
 @Api(value = "API MAPA DE BURACOS")
-@CrossOrigin(origins = "*")
 public class HoleController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class HoleController {
 
     @PostMapping(value = "/hole")
     @ApiOperation(value = "Register new hole information")
-    public ResponseEntity<Hole> create(@RequestBody Hole hole){
+    public ResponseEntity<Hole> create(@Valid @RequestBody Hole hole){
         hole = holeService.create(hole);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(hole.getId()).toUri();
         return ResponseEntity.created(uri).body(hole);
@@ -46,7 +46,7 @@ public class HoleController {
 
     @PutMapping(value = "/hole/{id}")
     @ApiOperation(value = "Update hole information")
-    public ResponseEntity<HoleDTO> update(@PathVariable Long id, @RequestBody HoleDTO holeDTO){
+    public ResponseEntity<HoleDTO> update(@PathVariable Long id, @Valid @RequestBody HoleDTO holeDTO){
         Hole hole = holeService.update(id, holeDTO);
         return ResponseEntity.ok(new HoleDTO(hole));
     }

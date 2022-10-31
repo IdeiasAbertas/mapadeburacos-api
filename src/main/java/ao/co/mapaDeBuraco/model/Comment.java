@@ -4,8 +4,10 @@ import ao.co.mapaDeBuraco.enums.CommentStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -19,7 +21,8 @@ public class Comment implements Serializable {
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotEmpty(message = "Descrição deve ser preenchida")
+    @Length(min = 5, max = 100, message = "O comentário deve conter de 3 a 100 caracteres")
     private String description;
     private Integer commentStatus;
 
