@@ -2,9 +2,11 @@ package ao.co.mapaDeBuraco.service.impl;
 
 import ao.co.mapaDeBuraco.enums.CommentStatus;
 import ao.co.mapaDeBuraco.model.Comment;
+import ao.co.mapaDeBuraco.model.Hole;
 import ao.co.mapaDeBuraco.model.dto.response.CommentDTO;
 import ao.co.mapaDeBuraco.repositories.CommentRepository;
 import ao.co.mapaDeBuraco.service.CommentService;
+import ao.co.mapaDeBuraco.service.HoleService;
 import ao.co.mapaDeBuraco.service.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private HoleService holeService;
+
     @Override
     public Comment findById(Long id) {
         Optional<Comment> comment = commentRepository.findById(id);
@@ -31,8 +36,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment create(Comment comment) {
+    public Comment create(Long holeId, Comment comment) {
         comment.setId(null);
+        Hole hole = holeService.findById(holeId);
+        comment.setHole(hole);
         return commentRepository.save(comment);
     }
 

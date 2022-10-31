@@ -5,6 +5,7 @@ import ao.co.mapaDeBuraco.model.Hole;
 import ao.co.mapaDeBuraco.model.dto.response.HoleDTO;
 import ao.co.mapaDeBuraco.repositories.HoleRepository;
 import ao.co.mapaDeBuraco.service.HoleService;
+import ao.co.mapaDeBuraco.service.exceptions.DataIntegrityViolationException;
 import ao.co.mapaDeBuraco.service.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,12 @@ public class HoleServiceImpl implements HoleService {
     public void delete(Long id) {
         findById(id);
         holeRepository.deleteById(id);
+        try {
+            holeRepository.deleteById(id);
+        }catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException(" Objecto não pode ser elimidado porque está relacionado a outra tabela");
+
+        }
 
     }
 

@@ -38,13 +38,23 @@ public class CommentController {
         return ResponseEntity.ok(comments.stream().map(CommentDTO::new).collect(Collectors.toList()));
     }
 
-    @PostMapping(value = "/comment")
+   /* @PostMapping(value = "/comment")
     @ApiOperation(value = "save comment ")
     public ResponseEntity<Comment> create(@RequestBody Comment comment){
         comment = commentService.create(comment);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(comment.getId()).toUri();
         return ResponseEntity.created(uri).body(comment);
+    }*/
+
+    @PostMapping(value = "/comment")
+    @ApiOperation(value = "save comment ")
+    public ResponseEntity<Comment> create(@RequestParam(value = "hole",defaultValue = "0") Long holeId,
+                                          @RequestBody Comment comment){
+        comment = commentService.create(holeId, comment);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(comment.getId()).toUri();
+        return ResponseEntity.created(uri).body(comment);
     }
+
     @PutMapping(value = "/comment/{id}")
     @ApiOperation(value = "update comment ")
     public ResponseEntity<CommentDTO> update(@PathVariable Long id, @RequestBody CommentDTO commentDTO){
