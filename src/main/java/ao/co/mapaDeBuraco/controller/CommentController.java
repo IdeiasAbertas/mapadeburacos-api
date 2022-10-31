@@ -1,26 +1,67 @@
 package ao.co.mapaDeBuraco.controller;
 
 import ao.co.mapaDeBuraco.model.Comment;
-import ao.co.mapaDeBuraco.model.Hole;
+import ao.co.mapaDeBuraco.model.dto.response.CommentDTO;
 import ao.co.mapaDeBuraco.service.CommentService;
-import ao.co.mapaDeBuraco.service.HoleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/comment")
+@RequestMapping(value = "/api")
+@Api(value = "API MAPA DE BURACOS")
+@CrossOrigin(origins = "*")
 public class CommentController {
 
     @Autowired
     CommentService commentService;
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Comment> findById(@PathVariable Long id){
-        return ResponseEntity.ok().body(commentService.findById(id));
+    @GetMapping(value = "/comment/{id}")
+    @ApiOperation(value = "Find comment by id")
+    public ResponseEntity<CommentDTO> findById(@PathVariable Long id){
+        Comment comment = commentService.findById(id);
+        return ResponseEntity.ok(new CommentDTO(comment));
+
+    }
+
+    @GetMapping(value = "/comment")
+    @ApiOperation(value = "List all comment")
+    public ResponseEntity<List<CommentDTO>> findAll() {
+        List<Comment> comments = commentService.findAll();
+        return ResponseEntity.ok(comments.stream().map(CommentDTO::new).collect(Collectors.toList()));
+    }
+
+    @PostMapping(value = "/comment")
+    @ApiOperation(value = "save comment ")
+    public ResponseEntity<Comment> create(@RequestBody Comment comment){
+        comment = commentService.create(comment);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(comment.getId()).toUri();
+        return ResponseEntity.created(uri).body(comment);
+    }
+    @PutMapping(value = "/comment/{id}")
+    @ApiOperation(value = "update comment ")
+    public ResponseEntity<CommentDTO> update(@PathVariable Long id, @RequestBody CommentDTO commentDTO){
+        Comment comment = commentService.update(id, commentDTO);
+        return ResponseEntity.ok(new CommentDTO(comment));
+    }
+    @PutMapping(value = "/comment/approveComment/{id}")
+    @ApiOperation(value = "Approve comment")
+    public ResponseEntity<Comment> approveComment(@PathVariable Long id, @RequestBody CommentDTO commentDTO){
+        Comment comment = commentService.approveComment(id, commentDTO);
+        return ResponseEntity.ok().body(comment);
+    }
+    @DeleteMapping(value = "/comment/{id}")
+    @ApiOperation(value = "Delete comment")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        commentService.delete(id);
+        return ResponseEntity.noContent().build();
 
     }
 }

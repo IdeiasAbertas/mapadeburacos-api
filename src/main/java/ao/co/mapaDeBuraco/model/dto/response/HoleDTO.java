@@ -1,24 +1,17 @@
-package ao.co.mapaDeBuraco.model;
+package ao.co.mapaDeBuraco.model.dto.response;
 
-import ao.co.mapaDeBuraco.enums.HoleStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import ao.co.mapaDeBuraco.model.Comment;
+import ao.co.mapaDeBuraco.model.Hole;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+public class HoleDTO implements Serializable {
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Hole implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String picture;
     private String description;
@@ -28,39 +21,30 @@ public class Hole implements Serializable {
     private String city;
 
     private Integer holeStatus;
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+
     private LocalDateTime openedDate;
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-    private LocalDateTime closedDate;
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-    private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "hole", cascade = CascadeType.REMOVE)
-    private List<Comment>  comments = new ArrayList<Comment>();
+    private List<Comment> comments = new ArrayList<Comment>();
 
+    public HoleDTO() {
 
-    public Hole() {
-        this.setOpenedDate(LocalDateTime.now());
-        this.setHoleStatus(HoleStatus.OPEN.getCode());
     }
-    public Hole(String picture, String description, String latitude, String longitude, String neighborhood, String city,
-                HoleStatus holeStatus) {
-        this.picture = picture;
-        this.description = description;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.neighborhood = neighborhood;
-        this.city = city;
-        this.setOpenedDate(LocalDateTime.now());
-        this.holeStatus = (holeStatus == null) ? 0 : HoleStatus.OPEN.getCode();
+
+    public HoleDTO(Hole holeDto) {
+        this.id = holeDto.getId();
+        this.picture = holeDto.getPicture();
+        this.description = holeDto.getDescription();
+        this.latitude = holeDto.getLatitude();
+        this.longitude = holeDto.getLongitude();
+        this.neighborhood = holeDto.getNeighborhood();
+        this.city = holeDto.getCity();
+        this.holeStatus = holeDto.getHoleStatus();
+        this.openedDate = holeDto.getOpenedDate();
+        this.comments = holeDto.getComments();
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getPicture() {
@@ -118,38 +102,17 @@ public class Hole implements Serializable {
     public void setHoleStatus(Integer holeStatus) {
         this.holeStatus = holeStatus;
     }
-
     public LocalDateTime getOpenedDate() {
         return openedDate;
     }
-
     public void setOpenedDate(LocalDateTime openedDate) {
         this.openedDate = openedDate;
     }
-
-    public LocalDateTime getClosedDate() {
-        return closedDate;
-    }
-
-    public void setClosedDate(LocalDateTime closedDate) {
-        this.closedDate = closedDate;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
+    public LocalDateTime getUpdatedAt(LocalDateTime updatedAt) {
+        return openedDate;
     }
-
-
 }
