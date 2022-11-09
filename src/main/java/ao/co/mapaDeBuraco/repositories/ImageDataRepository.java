@@ -1,13 +1,14 @@
 package ao.co.mapaDeBuraco.repositories;
 
-import ao.co.mapaDeBuraco.model.Admin;
+
+import ao.co.mapaDeBuraco.model.ImageData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface AdminRepository extends JpaRepository<Admin, Long> {
+public interface ImageDataRepository extends JpaRepository <ImageData, Long>{
 
-    Optional<Admin> findByUserName(String userName);
+    Optional<ImageData> findByName(String fileName);
 }

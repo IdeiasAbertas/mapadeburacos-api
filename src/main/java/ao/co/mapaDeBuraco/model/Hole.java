@@ -2,11 +2,13 @@ package ao.co.mapaDeBuraco.model;
 
 import ao.co.mapaDeBuraco.enums.HoleStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,14 +18,17 @@ import java.util.List;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Hole implements Serializable {
+
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty(message = "Precisa adicionar uma foto")
-    private String picture;
+    @Lob
+
+    private byte [] picture;
     @NotEmpty(message = "Descrição deve ser preenchida")
     @Length(min = 5, max = 100, message = "Descrição deve conter de 3 a 100 caracteres")
     private String description;
@@ -52,7 +57,7 @@ public class Hole implements Serializable {
         this.setOpenedDate(LocalDateTime.now());
         this.setHoleStatus(HoleStatus.OPEN.getCode());
     }
-    public Hole(String picture, String description, String latitude, String longitude, String neighborhood, String city,
+    public Hole(byte[] picture, String description, String latitude, String longitude, String neighborhood, String city,
                 HoleStatus holeStatus) {
         this.picture = picture;
         this.description = description;
@@ -72,11 +77,12 @@ public class Hole implements Serializable {
         this.id = id;
     }
 
-    public String getPicture() {
+    public byte[] getPicture() {
+
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(byte[]  picture) {
         this.picture = picture;
     }
 

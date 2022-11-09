@@ -3,10 +3,13 @@ package ao.co.mapaDeBuraco.service.impl;
 import ao.co.mapaDeBuraco.enums.HoleStatus;
 import ao.co.mapaDeBuraco.model.Hole;
 import ao.co.mapaDeBuraco.model.dto.response.HoleDTO;
+import ao.co.mapaDeBuraco.model.dto.resquest.HoleDTORequest;
+import ao.co.mapaDeBuraco.model.dto.resquest.HoleDTOUpdateRequest;
 import ao.co.mapaDeBuraco.repositories.HoleRepository;
 import ao.co.mapaDeBuraco.service.HoleService;
 import ao.co.mapaDeBuraco.service.exceptions.DataIntegrityViolationException;
 import ao.co.mapaDeBuraco.service.exceptions.ObjectNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +28,7 @@ public class HoleServiceImpl implements HoleService {
         Optional<Hole> hole = holeRepository.findById(id);
         return hole.orElseThrow(() -> new ObjectNotFoundException("Hole not found: " + id));
 
-        /*return hole.orElseThrow(() -> new ObjectNotFoundException("Hole not found: " + id +
-                " Type: " + Hole.class.getName()));*/
+
     }
 
     @Override
@@ -35,14 +37,15 @@ public class HoleServiceImpl implements HoleService {
     }
 
     @Override
-    public Hole create(Hole hole) {
-        hole.setId(null);
+    public Hole create(HoleDTORequest holeDTORequest) {
+        var hole = new Hole();
+        BeanUtils.copyProperties(holeDTORequest, hole);
         return holeRepository.save(hole);
     }
 
     @Override
     public Hole update(Long id, HoleDTO holeDTO) {
-        Hole hole = holeRepository.getReferenceById(id);
+        var hole = holeRepository.getReferenceById(id);
         hole.setPicture(holeDTO.getPicture());
         hole.setDescription(holeDTO.getDescription());
         hole.setLongitude(holeDTO.getLongitude());
@@ -55,9 +58,19 @@ public class HoleServiceImpl implements HoleService {
         return holeRepository.save(hole);
     }
 
+
+    @Override
+    public Hole update2(Long id, HoleDTOUpdateRequest holeDTOUpdateRequest) {
+        var hole = holeRepository.getReferenceById(id);
+        BeanUtils.copyProperties(holeDTOUpdateRequest, hole);
+        hole.setUpdatedAt(holeDTOUpdateRequest.getUpdatedAt(LocalDateTime.now()));
+        return holeRepository.save(hole);
+    }
+
+
     @Override
     public Hole closeHole(Long id){
-        Hole hole = holeRepository.getReferenceById(id);
+        var hole = holeRepository.getReferenceById(id);
         hole.setHoleStatus(HoleStatus.COVERED.getCode());
         hole.setUpdatedAt(LocalDateTime.now());
         hole.setClosedDate(LocalDateTime.now());
