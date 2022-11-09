@@ -98,12 +98,12 @@
 				<configuration>
 					<source>17</source>
 					<target>17</target>
-					<excludes>
+
 						<exclude>
 							<groupId>org.project-lombok</groupId>
 							<artifactId>lombok</artifactId>
 						</exclude>
-					</excludes>
+					</excludes-->
 				</configuration>
 			</plugin>
 		</plugins>
