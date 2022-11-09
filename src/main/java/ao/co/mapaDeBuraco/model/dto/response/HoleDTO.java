@@ -3,6 +3,9 @@ package ao.co.mapaDeBuraco.model.dto.response;
 import ao.co.mapaDeBuraco.model.Comment;
 import ao.co.mapaDeBuraco.model.Hole;
 
+import javax.persistence.Lob;
+import javax.validation.constraints.NotEmpty;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,14 +13,21 @@ import java.util.List;
 
 public class HoleDTO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private String picture;
+    @Lob
+    private byte[]  picture;
+    @NotEmpty(message = "Descrição deve ser preenchida")
     private String description;
+    @NotEmpty(message = "Latitude deve ser preenchida")
     private String latitude;
+    @NotEmpty(message = "Longitude deve ser preenchida")
     private String longitude;
+    @NotEmpty(message = "Bairro deve ser preenchido")
     private String neighborhood;
+    @NotEmpty(message = "Cidade deve ser preenchida")
     private String city;
 
     private Integer holeStatus;
@@ -47,11 +57,12 @@ public class HoleDTO implements Serializable {
         return id;
     }
 
-    public String getPicture() {
+    public byte[]  getPicture() {
+
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(byte[]  picture) {
         this.picture = picture;
     }
 
