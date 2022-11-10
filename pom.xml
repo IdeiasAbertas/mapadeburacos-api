@@ -15,7 +15,7 @@
 	<description>Sistema de informação, cadastro e geolocalização de buracos na cidade</description>
 	<properties>
 		<java.version>17</java.version>
-		<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
+
 	</properties>
 	<dependencies>
 		<dependency>
@@ -99,14 +99,10 @@
 					<source>17</source>
 					<target>17</target>
 
-						<exclude>
-							<groupId>org.project-lombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes-->
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+					</configuration>
+				</plugin>
+			</plugins>
+		</build>
+
 
 </project>
